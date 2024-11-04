@@ -1,6 +1,8 @@
 <template>
     <div class="form">
-        
+        <v-container>
+            
+        </v-container>
     </div>
 </template>
 
