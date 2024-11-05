@@ -1,7 +1,6 @@
 import { createWebHistory, createRouter } from 'vue-router'
-
-import ListingView from './ListingView.vue'
-import FormView from './FormView.vue'
+import ListingView from '../views/FormView.vue'
+import FormView from '../views/ListingView.vue'
 
 const routes = [
   { path: '/', component: ListingView },
