@@ -27,7 +27,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'Form',
+  name: 'RegisterForm',
   data() {
     return {
       nome: '',
@@ -43,11 +43,10 @@ export default {
         });
         console.log('Pessoa criada com sucesso:', response.data);
 
-        this.nome = '';
-        this.idade = '';
+        this.$router.push('/');
 
       } catch(error) {
-        console.log('Erro ao enviar os dados: ', error.datay);
+        console.log('Erro ao enviar os dados: ', error.data);
       }
     }
   }
