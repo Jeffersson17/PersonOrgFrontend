@@ -43,8 +43,6 @@ export default {
         });
         console.log('Pessoa criada com sucesso:', response.data);
 
-        this.nome = '';
-        this.idade = '';
         this.$router.push('/');
 
       } catch(error) {
