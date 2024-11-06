@@ -1,10 +1,18 @@
 import { createWebHistory, createRouter } from 'vue-router'
-import ListingView from '../views/FormView.vue'
-import FormView from '../views/ListingView.vue'
+import FormView from '@/views/FormView.vue'
+import Listing from '@/components/PeopleListing.vue';
 
 const routes = [
-  { path: '/', component: ListingView },
-  { path: '/about', component: FormView },
+  {
+    path: '/',
+    name: 'Home',
+    component: Listing
+  },
+  {
+    path: '/create',
+    name: 'Create',
+    component: FormView
+  },
 ];
 
 const router = createRouter({

@@ -2,27 +2,20 @@
   <div>
     <v-app>
       <v-main>
-        <router-link to="/">
-          Listagem
-        </router-link>
-        <router-link to="/create">
-          Cadastro
-        </router-link>
-
-
-        <router-view />
+        <router-link to="/create">Cadastro</router-link>
+        <PeopleListing />
       </v-main>
     </v-app>
   </div>
 </template>
 
 <script>
-import Form from './components/Form.vue'
+import PeopleListing from './components/PeopleListing.vue';
 
 export default {
   name: 'App',
   components: {
-    Form
+    PeopleListing
   }
 }
 </script>
