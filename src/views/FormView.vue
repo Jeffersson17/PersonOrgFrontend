@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1>Form</h1>
+        <h1 id="title">Formulário de Cadastro</h1>
         <RegisterForm />
     </div>
 </template>
@@ -16,3 +16,11 @@ export default {
 }
 
 </script>
+
+<style>
+
+#title {
+    text-align: center;
+}
+
+</style>

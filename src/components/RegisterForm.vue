@@ -45,6 +45,7 @@ export default {
 
         this.nome = '';
         this.idade = '';
+        this.$router.push('/');
 
       } catch(error) {
         console.log('Erro ao enviar os dados: ', error.data);
