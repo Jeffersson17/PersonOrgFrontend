@@ -3,8 +3,7 @@
     <v-app>
       <v-main>
         <div class="container" id="home">
-          <router-link to="/create">Cadastro</router-link>
-
+          <router-link class="btn btn-primary" to="/create">Cadastro</router-link>
           <router-view></router-view>
         </div>
       </v-main>
