@@ -2,20 +2,28 @@
   <div>
     <v-app>
       <v-main>
-        <router-link to="/create">Cadastro</router-link>
-        <PeopleListing />
+        <div class="container" id="home">
+          <router-link to="/create">Cadastro</router-link>
+
+          <router-view></router-view>
+        </div>
       </v-main>
     </v-app>
   </div>
 </template>
 
 <script>
-import PeopleListing from './components/PeopleListing.vue';
 
 export default {
   name: 'App',
-  components: {
-    PeopleListing
-  }
 }
 </script>
+
+<style scoped>
+
+#home {
+  margin: 40px;
+  text-align: left;
+}
+
+</style>

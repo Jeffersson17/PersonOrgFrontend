@@ -27,7 +27,7 @@
 import axios from 'axios';
 
 export default {
-  name: 'Form',
+  name: 'RegisterForm',
   data() {
     return {
       nome: '',
@@ -47,7 +47,7 @@ export default {
         this.idade = '';
 
       } catch(error) {
-        console.log('Erro ao enviar os dados: ', error.datay);
+        console.log('Erro ao enviar os dados: ', error.data);
       }
     }
   }
