@@ -21,6 +21,7 @@ export default {
 
 #title {
     text-align: center;
+    margin: 25px;
 }
 
 </style>

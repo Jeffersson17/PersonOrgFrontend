@@ -3,7 +3,6 @@
     <v-app>
       <v-main>
         <div class="container" id="home">
-          <router-link class="btn btn-primary" to="/create">Cadastro</router-link>
           <router-view></router-view>
         </div>
       </v-main>
@@ -19,10 +18,5 @@ export default {
 </script>
 
 <style scoped>
-
-#home {
-  margin: 40px;
-  text-align: left;
-}
 
 </style>

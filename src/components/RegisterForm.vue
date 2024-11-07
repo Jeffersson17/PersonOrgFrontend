@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { http } from '@/services/config';
 
 export default {
   name: 'RegisterForm',
@@ -37,16 +37,18 @@ export default {
   methods: {
     async submitForm() {
       try {
-        const response = await axios.post("http://localhost:8000/persons/create-api/", {
+      
+        const response = await http.post("persons/create-api/", {
           nome: this.nome,
           idade: this.idade
         });
-        console.log('Pessoa criada com sucesso:', response.data);
+        console.log('Pessoa criada com sucesso:', response.message);
 
         this.$router.push('/');
 
       } catch(error) {
-        console.log('Erro ao enviar os dados: ', error.data);
+        console.log('Erro ao enviar os dados: ', error.message);
+
       }
     }
   }
