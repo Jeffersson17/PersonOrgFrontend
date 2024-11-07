@@ -23,48 +23,33 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { http } from '@/services/config';
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default {
-  name: 'RegisterForm',
-  data() {
-    return {
-      nome: '',
-      idade: '',
-      snackbar: {
-        visible: false,
-        message: '',
-        timeout: 3000 // Duração em milissegundos
-      }
-    };
-  },
-  methods: {
-    async submitForm() {
-      try {
+// Declarando consts reativas
+const nome = ref('');
+const idade = ref('');
+const snackbar = ref({ visible: false, message: '', timeout: 3000, });
+const router = useRouter();
 
-        const response = await http.post("persons/create-api/", {
-          nome: this.nome,
-          idade: this.idade
-        });
-        console.log('Pessoa criada com sucesso:', response.message);
+function submitForm() {
+  http.post('persons/create-api/', {
+    nome: nome.value,
+    idade: idade.value
+  })
+  .then(() => {
+    // Redireciona para a página principal
+    router.push({ name: 'Home', query: { snackbarMessage: 'Cadastro realizado com sucesso!' } });
+  })
+  .catch(error => {
+    console.log('Erro ao realizar o cadastro: ', error);
 
-        this.$router.push({
-          name: 'Home',
-          query: { snackbarMessage: 'Cadastro realizado com sucesso!' }
-        });
-
-      } catch(error) {
-        console.log('Erro ao enviar os dados: ', error.message);
-
-        this.snackbar.message = 'Erro ao realizar o cadastro.';
-        this.snackbar.visible = true;
-
-      }
-    }
-  }
+    snackbar.value.visible = true;
+    snackbar.value.message = 'Erro ao realizar o cadastro.';
+  })
 }
-
 </script>
 
 <style scoped>

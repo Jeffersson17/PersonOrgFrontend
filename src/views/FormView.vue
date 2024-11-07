@@ -5,16 +5,8 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import RegisterForm from '@/components/RegisterForm.vue';
-
-export default {
-    name: 'FormView',
-    components: {
-        RegisterForm
-    }
-}
-
 </script>
 
 <style>

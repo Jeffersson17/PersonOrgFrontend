@@ -42,61 +42,52 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import { http } from '@/services/config';
+import { defineProps, onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
-export default {
-  props: ['id'],
-  data() {
-      return {
-        person: null,
-        snackbar: {
-          visible: false,
-          message: '',
-          timeout: 3000 // Duração em milissegundos
-      }
-    }
-  },
-
-  mounted() {
-    this.fetchPerson();
-  },
-
-  methods: {
-
-    async fetchPerson() {
-
-      try{
-        const response = await http.get(`persons/detail-api/${this.id}/`);
-        this.person = response.data;
-        console.log(this.person);
-
-      } catch(error) {
-        console.log('Erro ao buscar a pessoa: ', error.message);
-      }
-    },
-
-    async submitUpdate() {
-
-      try{
-        // Atualiza os dados, e redireciona para a página principal
-        await http.put(`persons/detail-api/${this.id}/`, this.person);
-
-        this.$router.push({
-          name: 'Home',
-          query: { snackbarMessage: 'Atualização feita com sucesso!' }
-         });
-
-      } catch(error) {
-        console.log('Erro ao atualizar: ', error);
-
-        this.snackbar.message = 'Erro ao atualizar.';
-        this.snackbar.visible = true;
-      }
-    }
+// Declarando consts reativas
+const router = useRouter()
+const person = ref(null);
+const props = defineProps({
+  id: {
+    type: [String, Number],
+    required: true,
   }
+});
+const snackbar = ref({
+    visible: false,
+    message: '',
+    timeout: 3000, // Timeout em milissegundos
+});
+
+// Values da pessoa
+function fetchPersons() {
+    http.get(`persons/detail-api/${props.id}/`)
+    .then(response => {
+        person.value = response.data;
+    })
+    .catch(error => {
+        console.log('Erro ao buscar esta pessoa: ', error);
+    });
 }
 
+// Enviar os dados atualizados
+function submitUpdate() {
+  http.put(`persons/detail-api/${props.id}/`, person.value)
+  .then(() => {
+    router.push({ name: 'Home', query: { snackbarMessage: 'Atualização feita com sucesso!' }});
+  })
+  .catch(error => {
+    console.log('Erro ao atualizar os dados: ', error);
+  })
+}
+
+// Mounted
+onMounted(() => {
+  fetchPersons();
+});
 </script>
 
 <style>
