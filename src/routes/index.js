@@ -1,6 +1,7 @@
 import { createWebHistory, createRouter } from 'vue-router'
 import FormView from '@/views/FormView.vue'
 import HomePageView from '@/views/HomePageView.vue';
+import EditForm from '@/components/EditForm.vue';
 
 const routes = [
   {
@@ -13,6 +14,12 @@ const routes = [
     name: 'Create',
     component: FormView
   },
+  {
+    path: '/update/:id',
+    name: 'Update',
+    component: EditForm,
+    props: true,
+  }
 ];
 
 const router = createRouter({

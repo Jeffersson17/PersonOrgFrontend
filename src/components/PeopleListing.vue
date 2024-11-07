@@ -1,6 +1,10 @@
 <template>
     <div>
         <h1 id="title-listing">Listagem de Todos os Cadastros</h1>
+        <div id="create-person">
+            <router-link class="btn btn-primary" to="/create">Cadastro</router-link>
+            <router-view></router-view>
+        </div>
 
         <v-table id="table-listing">
             <thead>
@@ -18,12 +22,18 @@
                 </thead>
                 <tbody>
                 <tr
-                    v-for="item in pessoas"
-                    :key="item.name"
+                    v-for="pessoa in pessoas"
+                    :key="pessoa.id"
                 >
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.nome }}</td>
-                    <td>{{ item.idade }}</td>
+                    <td>{{ pessoa.id }}</td>
+                    <td>{{ pessoa.nome }}</td>
+                    <td>{{ pessoa.idade }}</td>
+                    <td>
+                        <div class="d-flex justify-space-around">
+                            <v-icon @click="editPerson(pessoa.id)" color="blue" title="Editar">mdi-pencil</v-icon>
+                            <v-icon @click="deletePerson(pessoa.id)" color="red" title="Deletar">mdi-delete</v-icon>
+                        </div>
+                    </td>
                 </tr>
             </tbody>
         </v-table>
@@ -31,7 +41,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { http } from '@/services/config';
 
     export default {
         name: 'PeopleListing',
@@ -41,15 +51,34 @@ import axios from 'axios';
             }
         },
         mounted() {
-            this.fetchPersons()
+            this.fetchPersons();
         },
         methods: {
             async fetchPersons() {
+
                 try {
-                    const response = await axios.get('http://localhost:8000/persons/list-api/')
-                    this.pessoas = response.data
+                    const response = await http.get('persons/list-api/');
+                    this.pessoas = response.data;
+
                 } catch (error) {
-                    console.error('Erro ao buscar os dados: ', error);
+                    console.error('Erro ao buscar os dados: ', error.message);
+            }
+        },
+
+        editPerson(id) {
+            // Redireciona para a rota de edição
+            this.$router.push({ name: 'Update', params: { id } });
+        },
+
+        async deletePerson(id) {
+            try {
+                await http.delete(`persons/detail-api/${id}/`);
+
+                // Atualiza a listagem após a exclusão
+                this.pessoas = this.pessoas.filter(person => person.id !== id);
+
+            } catch(error) {
+                console.log('Erro ao exluir a pessoa desejada: ',error.message);
             }
         }
     }
@@ -59,6 +88,11 @@ import axios from 'axios';
 <style scoped>
 #title-listing {
     text-align: center;
+}
+
+#create-person {
+  margin: 40px;
+  text-align: left;
 }
 
 </style>
