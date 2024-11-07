@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1 id="title-listing">Listagem de Todos os Cadastros</h1>
-        
+
         <div id="create-person">
             <router-link class="btn btn-primary" to="/create">Cadastro</router-link>
             <router-view></router-view>
@@ -19,6 +19,9 @@
                     </th>
                     <th class="text-left">
                         IDADE
+                    </th>
+                    <th class="text-center">
+                        AÇÕES
                     </th>
                 </tr>
                 </thead>
@@ -38,6 +41,23 @@
                     </td>
                 </tr>
             </tbody>
+            <v-snackbar
+                v-model="snackbar.visible"
+                :timeout="snackbar.timeout"
+                color="success"
+            >
+            {{ snackbar.message }}
+            <template v-slot:action="{ attrs }">
+                <v-btn
+                    color="white"
+                    text
+                    v-bind="attrs"
+                    @click="snackbar.visible = false"
+                >
+                    Fechar
+                </v-btn>
+            </template>
+            </v-snackbar>
         </v-table>
     </div>
 </template>
@@ -49,11 +69,28 @@ import { http } from '@/services/config';
         name: 'PeopleListing',
         data() {
             return {
-                pessoas: []
+                pessoas: [],
+                snackbar: {
+                    visible: false,
+                    message: '',
+                    timeout: 3000 // Duração em milissegundos
+            }
             }
         },
         mounted() {
             this.fetchPersons();
+
+            const message = this.$route.query.snackbarMessage;
+            if(message) {
+                this.snackbar.message = message;
+                this.snackbar.visible = true;
+
+                // Limpa query  da URL
+                this.$router.replace({
+                    name: 'Home',
+                    query: {}
+                })
+            }
         },
         methods: {
             async fetchPersons() {
@@ -75,12 +112,17 @@ import { http } from '@/services/config';
         async deletePerson(id) {
             try {
                 await http.delete(`persons/detail-api/${id}/`);
+                this.snackbar.message = 'Exclusão feita com sucesso!';
+                this.snackbar.visible = true;
 
                 // Atualiza a listagem após a exclusão
                 this.pessoas = this.pessoas.filter(person => person.id !== id);
 
             } catch(error) {
                 console.log('Erro ao exluir a pessoa desejada: ',error.message);
+
+                this.snackbar.message = 'Erro ao excluir a pessoa desejada.';
+                this.snackbar.visible = true;
             }
         }
     }

@@ -19,11 +19,26 @@
               class="me-4"
               type="submit"
             >submit</v-btn>
+
+            <v-snackbar
+              v-model="snackbar.visible"
+              :timeout="snackbar.timeout"
+              color="success"
+            >
+              {{ snackbar.message }}
+              <template v-slot:action="{ attrs }">
+                <v-btn
+                  color="white"
+                  text
+                  v-bind="attrs"
+                  @click="snackbar.visible = false"
+                >
+                  Fechar
+                </v-btn>
+              </template>
+            </v-snackbar>
           </form>
         </v-container>
-    </div>
-    <div v-else>
-      <h1>ERRO</h1>
     </div>
 </template>
 
@@ -35,6 +50,11 @@ export default {
   data() {
       return {
         person: null,
+        snackbar: {
+          visible: false,
+          message: '',
+          timeout: 3000 // Duração em milissegundos
+      }
     }
   },
 
@@ -61,10 +81,17 @@ export default {
       try{
         // Atualiza os dados, e redireciona para a página principal
         await http.put(`persons/detail-api/${this.id}/`, this.person);
-        this.$router.push({ name: 'Home' });
+
+        this.$router.push({
+          name: 'Home',
+          query: { snackbarMessage: 'Atualização feita com sucesso!' }
+         });
 
       } catch(error) {
         console.log('Erro ao atualizar: ', error);
+
+        this.snackbar.message = 'Erro ao atualizar.';
+        this.snackbar.visible = true;
       }
     }
   }

@@ -31,23 +31,34 @@ export default {
   data() {
     return {
       nome: '',
-      idade: ''
+      idade: '',
+      snackbar: {
+        visible: false,
+        message: '',
+        timeout: 3000 // Duração em milissegundos
+      }
     };
   },
   methods: {
     async submitForm() {
       try {
-      
+
         const response = await http.post("persons/create-api/", {
           nome: this.nome,
           idade: this.idade
         });
         console.log('Pessoa criada com sucesso:', response.message);
 
-        this.$router.push('/');
+        this.$router.push({
+          name: 'Home',
+          query: { snackbarMessage: 'Cadastro realizado com sucesso!' }
+        });
 
       } catch(error) {
         console.log('Erro ao enviar os dados: ', error.message);
+
+        this.snackbar.message = 'Erro ao realizar o cadastro.';
+        this.snackbar.visible = true;
 
       }
     }
