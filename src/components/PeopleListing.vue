@@ -1,10 +1,12 @@
 <template>
     <div>
         <h1 id="title-listing">Listagem de Todos os Cadastros</h1>
+        
         <div id="create-person">
             <router-link class="btn btn-primary" to="/create">Cadastro</router-link>
             <router-view></router-view>
         </div>
+
 
         <v-table id="table-listing">
             <thead>
