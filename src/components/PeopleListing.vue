@@ -7,7 +7,6 @@
             <router-view></router-view>
         </div>
 
-
         <v-table id="table-listing">
             <thead>
                 <tr>
@@ -24,8 +23,9 @@
                         AÇÕES
                     </th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+
+            <tbody>
                 <tr
                     v-for="pessoa in pessoas"
                     :key="pessoa.id"
@@ -41,22 +41,23 @@
                     </td>
                 </tr>
             </tbody>
+
             <v-snackbar
                 v-model="snackbar.visible"
                 :timeout="snackbar.timeout"
                 color="success"
             >
-            {{ snackbar.message }}
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    color="white"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar.visible = false"
-                >
-                    Fechar
-                </v-btn>
-            </template>
+                {{ snackbar.message }}
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="white"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar.visible = false"
+                    >
+                        Fechar
+                    </v-btn>
+                </template>
             </v-snackbar>
         </v-table>
     </div>
@@ -74,6 +75,7 @@ const pessoas = ref([]);
 const snackbar = ref({
     visible: false,
     message: '',
+    color: 'success',
     timeout: 3000, // Timeout em milissegundos
 });
 
@@ -85,6 +87,7 @@ function fetchPersons() {
     })
     .catch(error => {
         snackbar.value.visible = true;
+        snackbar.value.color = 'red';
         snackbar.value.message = 'Erro ao buscar as pessoas: ' + error.message;
     });
 }
@@ -99,20 +102,15 @@ function deletePerson(id) {
     http.delete(`persons/detail-api/${id}/`)
     .then(() => {
         // Atualiza a lista removendo a pessoa com o id correspondente
-        pessoas.value = pessoas.value.filter(person => person.id !== id),
+        fetchPersons();
 
-        snackbar.value = {
-            visible: true,
-            message: 'Exclusão feita com sucesso!',
-            timeout: 3000, // Timeout em milissegundos
-        };
+        snackbar.value.visible = true;
+        snackbar.value.message = 'Exclusão feita com sucesso!';
     })
     .catch(error => {
-        snackbar.value = {
-            visible: true,
-            message: 'Erro ao excluir essa pessoa da lista.' + error.message,
-            timeout: 3000 // Timeout em milissegundos
-        }
+        snackbar.value.visible = true;
+        snackbar.value.color = 'red';
+        snackbar.value.message = 'Erro ao excluir essa pessoa: ' + error.message;
     });
 }
 
@@ -128,11 +126,8 @@ onMounted(() => {
             snackbar.value.message = message;
             snackbar.value.visible = true;
             // Limpa a query da URL
-            router.replace({
-                name: 'Home',
-                query: {}
-            });
-    }
+            router.replace({ name: 'Home', query: {} });
+        }
     });
 });
 </script>
