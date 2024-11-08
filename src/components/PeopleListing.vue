@@ -45,7 +45,7 @@
             <v-snackbar
                 v-model="snackbar.visible"
                 :timeout="snackbar.timeout"
-                color="success"
+                :color="snackbar.color"
             >
                 {{ snackbar.message }}
                 <template v-slot:action="{ attrs }">
@@ -109,7 +109,7 @@ function deletePerson(id) {
     })
     .catch(error => {
         snackbar.value.visible = true;
-        snackbar.value.color = 'red';
+        snackbar.value.color = 'danger';
         snackbar.value.message = 'Erro ao excluir essa pessoa: ' + error.message;
     });
 }
