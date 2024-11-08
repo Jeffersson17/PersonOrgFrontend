@@ -69,7 +69,8 @@ function fetchPersons() {
         person.value = response.data;
     })
     .catch(error => {
-        console.log('Erro ao buscar esta pessoa: ', error);
+      snackbar.value.visible = true;
+      snackbar.value.message = 'Erro ao buscar essa pessoa: ' + error.message;
     });
 }
 
@@ -80,7 +81,8 @@ function submitUpdate() {
     router.push({ name: 'Home', query: { snackbarMessage: 'Atualização feita com sucesso!' }});
   })
   .catch(error => {
-    console.log('Erro ao atualizar os dados: ', error);
+    snackbar.value.visible = true;
+    snackbar.value.message = 'Erro ao atualizar os dados: ' + error.message;
   })
 }
 

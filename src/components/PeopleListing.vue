@@ -84,7 +84,8 @@ function fetchPersons() {
         pessoas.value = response.data;
     })
     .catch(error => {
-        console.log('Erro ao buscar as pessoas: ', error);
+        snackbar.value.visible = true;
+        snackbar.value.message = 'Erro ao buscar as pessoas: ' + error.message;
     });
 }
 
@@ -107,11 +108,9 @@ function deletePerson(id) {
         };
     })
     .catch(error => {
-        console.log('Erro ao excluir essa pessoa: ', error);
-
         snackbar.value = {
             visible: true,
-            message: 'Erro ao excluir essa pessoa da lista.',
+            message: 'Erro ao excluir essa pessoa da lista.' + error.message,
             timeout: 3000 // Timeout em milissegundos
         }
     });

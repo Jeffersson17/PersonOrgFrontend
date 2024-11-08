@@ -44,10 +44,8 @@ function submitForm() {
     router.push({ name: 'Home', query: { snackbarMessage: 'Cadastro realizado com sucesso!' } });
   })
   .catch(error => {
-    console.log('Erro ao realizar o cadastro: ', error);
-
     snackbar.value.visible = true;
-    snackbar.value.message = 'Erro ao realizar o cadastro.';
+    snackbar.value.message = 'Erro ao realizar o cadastro.' + error.message;
   })
 }
 </script>
