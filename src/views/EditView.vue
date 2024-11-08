@@ -4,22 +4,6 @@
     </div>
 </template>
 
-<script>
+<script setup>
 import EditForm from '@/components/EditForm.vue';
-
-export default {
-    name: 'EditView',
-    components: {
-        EditForm
-    }
-}
-
 </script>
-
-<style>
-
-#title {
-    text-align: center;
-}
-
-</style>

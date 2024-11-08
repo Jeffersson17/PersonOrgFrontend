@@ -7,7 +7,6 @@
             <router-view></router-view>
         </div>
 
-
         <v-table id="table-listing">
             <thead>
                 <tr>
@@ -24,8 +23,9 @@
                         AÇÕES
                     </th>
                 </tr>
-                </thead>
-                <tbody>
+            </thead>
+
+            <tbody>
                 <tr
                     v-for="pessoa in pessoas"
                     :key="pessoa.id"
@@ -41,92 +41,95 @@
                     </td>
                 </tr>
             </tbody>
+
             <v-snackbar
                 v-model="snackbar.visible"
                 :timeout="snackbar.timeout"
                 color="success"
             >
-            {{ snackbar.message }}
-            <template v-slot:action="{ attrs }">
-                <v-btn
-                    color="white"
-                    text
-                    v-bind="attrs"
-                    @click="snackbar.visible = false"
-                >
-                    Fechar
-                </v-btn>
-            </template>
+                {{ snackbar.message }}
+                <template v-slot:action="{ attrs }">
+                    <v-btn
+                        color="white"
+                        text
+                        v-bind="attrs"
+                        @click="snackbar.visible = false"
+                    >
+                        Fechar
+                    </v-btn>
+                </template>
             </v-snackbar>
         </v-table>
     </div>
 </template>
 
-<script>
+<script setup>
 import { http } from '@/services/config';
+import { ref, onMounted, nextTick } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
-    export default {
-        name: 'PeopleListing',
-        data() {
-            return {
-                pessoas: [],
-                snackbar: {
-                    visible: false,
-                    message: '',
-                    timeout: 3000 // Duração em milissegundos
-            }
-            }
-        },
-        mounted() {
-            this.fetchPersons();
+// Declarando consts reativas
+const route = useRoute();
+const router = useRouter();
+const pessoas = ref([]);
+const snackbar = ref({
+    visible: false,
+    message: '',
+    color: 'success',
+    timeout: 3000, // Timeout em milissegundos
+});
 
-            const message = this.$route.query.snackbarMessage;
-            if(message) {
-                this.snackbar.message = message;
-                this.snackbar.visible = true;
-
-                // Limpa query  da URL
-                this.$router.replace({
-                    name: 'Home',
-                    query: {}
-                })
-            }
-        },
-        methods: {
-            async fetchPersons() {
-
-                try {
-                    const response = await http.get('persons/list-api/');
-                    this.pessoas = response.data;
-
-                } catch (error) {
-                    console.error('Erro ao buscar os dados: ', error.message);
-            }
-        },
-
-        editPerson(id) {
-            // Redireciona para a rota de edição
-            this.$router.push({ name: 'Update', params: { id } });
-        },
-
-        async deletePerson(id) {
-            try {
-                await http.delete(`persons/detail-api/${id}/`);
-                this.snackbar.message = 'Exclusão feita com sucesso!';
-                this.snackbar.visible = true;
-
-                // Atualiza a listagem após a exclusão
-                this.pessoas = this.pessoas.filter(person => person.id !== id);
-
-            } catch(error) {
-                console.log('Erro ao exluir a pessoa desejada: ',error.message);
-
-                this.snackbar.message = 'Erro ao excluir a pessoa desejada.';
-                this.snackbar.visible = true;
-            }
-        }
-    }
+// Listing
+function fetchPersons() {
+    http.get('persons/list-api/')
+    .then(response => {
+        pessoas.value = response.data;
+    })
+    .catch(error => {
+        snackbar.value.visible = true;
+        snackbar.value.color = 'red';
+        snackbar.value.message = 'Erro ao buscar as pessoas: ' + error.message;
+    });
 }
+
+// Update
+function editPerson(id) {
+    router.push({ name: 'Update', params: {id} });
+}
+
+// Delete
+function deletePerson(id) {
+    http.delete(`persons/detail-api/${id}/`)
+    .then(() => {
+        // Atualiza a lista removendo a pessoa com o id correspondente
+        fetchPersons();
+
+        snackbar.value.visible = true;
+        snackbar.value.message = 'Exclusão feita com sucesso!';
+    })
+    .catch(error => {
+        snackbar.value.visible = true;
+        snackbar.value.color = 'red';
+        snackbar.value.message = 'Erro ao excluir essa pessoa: ' + error.message;
+    });
+}
+
+// Mounted
+onMounted(() => {
+    fetchPersons();
+
+    // Snackbar do RegisterForm e EditForm
+    nextTick(() => {
+        const message = route.query.snackbarMessage;
+
+        if(message) {
+            snackbar.value.message = message;
+            snackbar.value.visible = true;
+            // Limpa a query da URL
+            router.replace({ name: 'Home', query: {} });
+        }
+    });
+});
 </script>
 
 <style scoped>
