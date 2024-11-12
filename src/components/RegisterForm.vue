@@ -53,7 +53,7 @@ const nome = ref('');
 const idade = ref('');
 const snackbar = ref({ visible: false, message: '', color: 'success', timeout: 3000, });
 const router = useRouter();
-const errors = { nome: [], idade: [] }
+const errors = { nome: [], idade: [] };
 
 function submitForm() {
   http.post('persons/create-api/', {
