@@ -20,7 +20,7 @@
             <v-list>
               <v-list-item>
                 <router-link to="/" class="v-list-item-title">
-                  <v-btn text>Home</v-btn>
+                  <v-btn text>Listagem</v-btn>
                 </router-link>
               </v-list-item>
 
