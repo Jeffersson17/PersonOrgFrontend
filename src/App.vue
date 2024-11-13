@@ -31,6 +31,24 @@
               </v-list-item>
             </v-list>
           </v-menu>
+
+          <v-menu
+            open-on-hover
+          >
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props">
+                Organização
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <router-link to="/organization/listing" class="v-list-item-title">
+                  <v-btn text>Listagem</v-btn>
+                </router-link>
+              </v-list-item>
+            </v-list>
+          </v-menu>
         </v-app-bar>
           <router-view></router-view>
 
