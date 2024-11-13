@@ -2,6 +2,7 @@ import { createWebHistory, createRouter } from 'vue-router'
 import FormView from '@/views/FormView.vue'
 import HomePageView from '@/views/HomePageView.vue';
 import EditForm from '@/components/EditForm.vue';
+import OrganizationListing from '@/components/Organization/OrganizationListing.vue';
 
 const routes = [
   {
@@ -19,6 +20,11 @@ const routes = [
     name: 'Update',
     component: EditForm,
     props: true,
+  },
+  {
+    path: '/organization/listing',
+    name: 'ListingOrganization',
+    component: OrganizationListing
   }
 ];
 
