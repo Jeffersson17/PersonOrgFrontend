@@ -130,6 +130,7 @@ onMounted(() => {
 <style scoped>
 #title-listing {
     text-align: center;
+    margin: 30px;
 }
 
 #create-person {

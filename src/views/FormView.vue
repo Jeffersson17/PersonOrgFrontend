@@ -13,7 +13,7 @@ import RegisterForm from '@/components/RegisterForm.vue';
 
 #title {
     text-align: center;
-    margin: 25px;
+    margin: 30px;
 }
 
 </style>
