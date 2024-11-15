@@ -20,13 +20,37 @@
             <v-list>
               <v-list-item>
                 <router-link to="/" class="v-list-item-title">
-                  <v-btn text>Home</v-btn>
+                  <v-btn text>Listagem</v-btn>
                 </router-link>
               </v-list-item>
 
               <v-list-item>
                 <router-link to="/create" class="v-list-item-title">
                   <v-btn text>Registrar Usuário</v-btn>
+                </router-link>
+              </v-list-item>
+            </v-list>
+          </v-menu>
+
+          <v-menu
+            open-on-hover
+          >
+            <template v-slot:activator="{ props }">
+              <v-btn v-bind="props">
+                Organização
+              </v-btn>
+            </template>
+
+            <v-list>
+              <v-list-item>
+                <router-link to="/organization/listing" class="v-list-item-title">
+                  <v-btn text>Listagem</v-btn>
+                </router-link>
+              </v-list-item>
+
+              <v-list-item>
+                <router-link to="/organization/register" class="v-list-item-title">
+                  <v-btn text>Registrar organização</v-btn>
                 </router-link>
               </v-list-item>
             </v-list>

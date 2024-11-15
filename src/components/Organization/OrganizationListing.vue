@@ -1,6 +1,6 @@
 <template>
     <div>
-        <h1 id="title-listing">Listagem de Todos os Cadastros</h1>
+        <h1 id="title-listing">Listagem de Todas as Organizações</h1>
 
         <v-table id="table-listing">
             <thead>
@@ -12,7 +12,16 @@
                         NOME
                     </th>
                     <th class="text-left">
-                        IDADE
+                        TELEFONE
+                    </th>
+                    <th class="text-left">
+                        CIDADE
+                    </th>
+                    <th class="text-left">
+                        ENDEREÇO
+                    </th>
+                    <th class="text-left">
+                        AREA
                     </th>
                     <th class="text-center">
                         AÇÕES
@@ -22,16 +31,19 @@
 
             <tbody>
                 <tr
-                    v-for="pessoa in pessoas"
-                    :key="pessoa.id"
+                    v-for="organization in organizations"
+                    :key="organization.id"
                 >
-                    <td>{{ pessoa.id }}</td>
-                    <td>{{ pessoa.nome }}</td>
-                    <td>{{ pessoa.idade }}</td>
+                    <td>{{ organization.id }}</td>
+                    <td>{{ organization.name }}</td>
+                    <td>{{ organization.phone }}</td>
+                    <td>{{ organization.address.city.name }}</td>
+                    <td>{{ organization.address.address }}</td>
+                    <td>{{ organization.area }}</td>
                     <td>
                         <div class="d-flex justify-space-around">
-                            <v-icon @click="editPerson(pessoa.id)" color="blue" title="Editar">mdi-pencil</v-icon>
-                            <v-icon @click="deletePerson(pessoa.id)" color="red" title="Deletar">mdi-delete</v-icon>
+                            <v-icon @click="editOrganization(organization.id)" color="blue" title="Editar">mdi-pencil</v-icon>
+                            <v-icon @click="deleteOrganization(organization.id)" color="red" title="Deletar">mdi-delete</v-icon>
                         </div>
                     </td>
                 </tr>
@@ -66,7 +78,7 @@ import { useRoute, useRouter } from 'vue-router';
 // Declarando consts reativas
 const route = useRoute();
 const router = useRouter();
-const pessoas = ref([]);
+const organizations = ref([]);
 const snackbar = ref({
     visible: false,
     message: '',
@@ -75,29 +87,30 @@ const snackbar = ref({
 });
 
 // Listing
-function fetchPersons() {
-    http.get('persons/list-api/')
+function fetchOrganizations() {
+    http.get('organization/list-api/')
     .then(response => {
-        pessoas.value = response.data;
+        organizations.value = response.data;
+        console.log(response.data)
     })
     .catch(error => {
         snackbar.value.visible = true;
         snackbar.value.color = 'red';
-        snackbar.value.message = 'Erro ao buscar as pessoas: ' + error.message;
+        snackbar.value.message = 'Erro ao buscar as organizações: ' + error.message;
     });
 }
 
 // Update
-function editPerson(id) {
+function editOrganization(id) {
     router.push({ name: 'Update', params: {id} });
 }
 
 // Delete
-function deletePerson(id) {
-    http.delete(`persons/detail-api/${id}/`)
+function deleteOrganization(id) {
+    http.delete(`organizations/detail-api/${id}/`)
     .then(() => {
-        // Atualiza a lista removendo a pessoa com o id correspondente
-        fetchPersons();
+        // Atualiza a lista após a exclusão
+        fetchOrganizations();
 
         snackbar.value.visible = true;
         snackbar.value.message = 'Exclusão feita com sucesso!';
@@ -105,15 +118,15 @@ function deletePerson(id) {
     .catch(error => {
         snackbar.value.visible = true;
         snackbar.value.color = 'danger';
-        snackbar.value.message = 'Erro ao excluir essa pessoa: ' + error.message;
+        snackbar.value.message = 'Erro ao excluir essa organização: ' + error.message;
     });
 }
 
 // Mounted
 onMounted(() => {
-    fetchPersons();
+    fetchOrganizations();
 
-    // Snackbar do RegisterForm e EditForm
+    // Snackbar do RegisterOrganization e EditOrganization
     nextTick(() => {
         const message = route.query.snackbarMessage;
 
