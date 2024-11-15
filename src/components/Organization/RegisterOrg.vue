@@ -65,7 +65,6 @@
         </div>
 
         <AddressRegister />
-        <CityRegister />
     </div>
 </template>
 
@@ -73,7 +72,6 @@
 import { http } from '@/services/config';
 import { onMounted, ref } from 'vue';
 import AddressRegister from './AddressRegister.vue';
-import CityRegister from './CityRegister.vue';
 
 const areaItems = ref([]);
 
