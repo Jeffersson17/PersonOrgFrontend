@@ -2,7 +2,7 @@
     <div>
         <div id="organization">
             <h5>ORGANIZAÇÃO</h5>
-            <v-form v-model="valid" id="form-organization">
+            <v-form id="form-organization">
                 <v-container>
                     <v-row>
                         <v-col
@@ -31,7 +31,6 @@
                         >
                             <v-combobox
                                 label="Area de Atuação"
-                                :items="areaItems"
                             ></v-combobox>
                         </v-col>
 
@@ -41,7 +40,6 @@
                         >
                             <v-combobox
                                 label="Endereço"
-                                :items="address"
                             ></v-combobox>
                         </v-col>
 
@@ -55,6 +53,92 @@
                         </v-col>
                     </v-row>
 
+                    <h5>ENDEREÇO</h5>
+                    <v-col
+                        cols="12"
+                        md="5"
+                    >
+                        <v-text-field
+                            label="Endereço"
+                            v-model="address"
+                            required
+                        ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="4"
+                    >
+                        <v-combobox
+                            label="Tipo de Endereço"
+                            v-model="address_type"
+                        ></v-combobox>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="3"
+                    >
+                        <v-text-field
+                            label="Numero"
+                            v-model="number"
+                            required
+                        ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                        <v-combobox
+                            label="Cidade"
+                            v-model="city"
+                        ></v-combobox>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                        <v-text-field
+                            label="CEP"
+                            v-model="cep"
+                            required
+                        ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="12"
+                    >
+                        <v-textarea
+                            label="Complemento ( Opcional )"
+                            v-model="complement"
+                        ></v-textarea>
+                    </v-col>
+
+                    <h5>CIDADE</h5>
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                        <v-text-field
+                            label="Nome da Cidade"
+                            v-model="city"
+                            required
+                        ></v-text-field>
+                    </v-col>
+
+                    <v-col
+                        cols="12"
+                        md="6"
+                    >
+                        <v-combobox
+                            label="Estado"
+                            v-model="state"
+                        ></v-combobox>
+                    </v-col>
+
                     <v-btn
                         class="me-4"
                         type="submit"
@@ -63,15 +147,12 @@
                 </v-container>
             </v-form>
         </div>
-
-        <AddressRegister />
     </div>
 </template>
 
 <script setup>
 import { http } from '@/services/config';
 import { onMounted, ref } from 'vue';
-import AddressRegister from './AddressRegister.vue';
 
 const areaItems = ref([]);
 
