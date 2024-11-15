@@ -66,7 +66,6 @@ function submitCity(city, state) {
     }
 
     emit('send-city', cityChoice);
-    console.log(cityChoice);
 }
 
 onMounted(() => {
