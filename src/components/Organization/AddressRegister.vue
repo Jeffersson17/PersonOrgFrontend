@@ -1,7 +1,7 @@
 <template>
     <div>
         <h5>ENDEREÇO</h5>
-        <v-form v-model="valid" id="form-organization">
+        <v-form id="form-organization">
             <v-container>
                 <v-row>
                     <v-col
@@ -40,7 +40,7 @@
                     >
                         <v-combobox
                             label="Cidade"
-                            :items="cityChoice"
+                            :items="cityItems"
                         ></v-combobox>
                     </v-col>
 
@@ -71,14 +71,18 @@
                 >submit</v-btn>
             </v-container>
         </v-form>
+
+        <CityRegister @send-city="cityChoice" />
     </div>
 </template>
 
 <script setup>
 import { http } from '@/services/config';
 import { onMounted, ref } from 'vue';
+import CityRegister from './CityRegister.vue';
 
 const addressItems = ref([]);
+const cityItems = ref([]);
 
 function addressChoice() {
     http.get('/api/choices')
@@ -90,6 +94,12 @@ function addressChoice() {
         .catch(error => {
             console.log(error.message);
         })
+}
+
+function cityChoice(name_city) {
+    cityItems.value = [name_city.name];
+
+    console.log(cityItems);
 }
 
 onMounted(() => {

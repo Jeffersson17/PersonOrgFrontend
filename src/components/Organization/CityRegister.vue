@@ -1,7 +1,7 @@
 <template>
     <div>
         <h5>CIDADE</h5>
-        <v-form v-model="valid" id="form-organization">
+        <v-form @submit.prevent="submitCity(city, state)" id="form-organization">
             <v-container>
                 <v-row>
                     <v-col
@@ -10,6 +10,7 @@
                     >
                         <v-text-field
                             label="Nome da Cidade"
+                            v-model="city"
                             required
                         ></v-text-field>
                     </v-col>
@@ -20,6 +21,7 @@
                     >
                     <v-combobox
                         label="Estado"
+                        v-model="state"
                         :items="stateItems"
                     ></v-combobox>
                     </v-col>
@@ -38,8 +40,12 @@
 <script setup>
 import { http } from '@/services/config';
 import { onMounted, ref } from 'vue';
+import { defineEmits } from 'vue';
 
 const stateItems = ref([]);
+const city = ref('');
+const state = ref('');
+const emit = defineEmits(['send-city'])
 
 function addressChoice() {
     http.get('/api/choices')
@@ -51,6 +57,16 @@ function addressChoice() {
         .catch(error => {
             console.log(error.message);
         })
+}
+
+function submitCity(city, state) {
+    const cityChoice = {
+        'name': city,
+        'state': state
+    }
+
+    emit('send-city', cityChoice);
+    console.log(cityChoice);
 }
 
 onMounted(() => {
