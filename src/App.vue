@@ -47,6 +47,12 @@
                   <v-btn text>Listagem</v-btn>
                 </router-link>
               </v-list-item>
+
+              <v-list-item>
+                <router-link to="/organization/register" class="v-list-item-title">
+                  <v-btn text>Registrar organização</v-btn>
+                </router-link>
+              </v-list-item>
             </v-list>
           </v-menu>
         </v-app-bar>
