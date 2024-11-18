@@ -5,6 +5,7 @@
             <v-text-field
               v-model="nome"
               label="Nome"
+              variant="outlined"
               :error-messages="errors.nome"
               required
             ></v-text-field>
@@ -12,12 +13,14 @@
             <v-text-field
               v-model="idade"
               label="Idade"
+              variant="outlined"
               :error-messages="errors.idade"
               required
             ></v-text-field>
 
             <v-btn
               class="me-4"
+              variant="tonal"
               type="submit"
             >submit</v-btn>
           </form>
