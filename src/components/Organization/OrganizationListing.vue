@@ -37,8 +37,8 @@
                     <td>{{ organization.id }}</td>
                     <td>{{ organization.name }}</td>
                     <td>{{ organization.phone }}</td>
-                    <td>{{ organization.address.city.name }}</td>
-                    <td>{{ organization.address.address }}</td>
+                    <td>{{ organization.address_base.city_base.name }}</td>
+                    <td>{{ organization.address_base.address }}</td>
                     <td>{{ organization.area }}</td>
                     <td>
                         <div class="d-flex justify-space-around">
@@ -91,7 +91,6 @@ function fetchOrganizations() {
     http.get('organization/list-api/')
     .then(response => {
         organizations.value = response.data;
-        console.log(response.data)
     })
     .catch(error => {
         snackbar.value.visible = true;
