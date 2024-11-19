@@ -4,6 +4,7 @@ import HomePageView from '@/views/HomePageView.vue';
 import EditForm from '@/components/EditForm.vue';
 import OrganizationListing from '@/components/Organization/OrganizationListing.vue';
 import RegisterOrg from '@/components/Organization/RegisterOrg.vue';
+import EditOrg from '@/components/Organization/EditOrg.vue';
 
 const routes = [
   {
@@ -31,6 +32,11 @@ const routes = [
     path: '/organization/register/',
     name: 'RegisterOrganization',
     component: RegisterOrg
+  },
+  {
+    path: '/organization/update/:id/',
+    name: 'UpdateOrganization',
+    component: EditOrg
   }
 ];
 
