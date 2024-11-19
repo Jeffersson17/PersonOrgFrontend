@@ -91,7 +91,7 @@ function fetchOrganizations() {
 
 // Update
 function editOrganization(id) {
-    router.push({ name: 'Update', params: {id} });
+    router.push({ name: 'UpdateOrganization', params: {id} });
 }
 
 // Delete
