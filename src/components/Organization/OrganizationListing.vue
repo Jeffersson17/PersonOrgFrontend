@@ -55,16 +55,6 @@
                 :color="snackbar.color"
             >
                 {{ snackbar.message }}
-                <template v-slot:action="{ attrs }">
-                    <v-btn
-                        color="white"
-                        text
-                        v-bind="attrs"
-                        @click="snackbar.visible = false"
-                    >
-                        Fechar
-                    </v-btn>
-                </template>
             </v-snackbar>
         </v-table>
     </div>
@@ -133,7 +123,7 @@ onMounted(() => {
             snackbar.value.message = message;
             snackbar.value.visible = true;
             // Limpa a query da URL
-            router.replace({ name: 'Home', query: {} });
+            router.replace({ name: 'ListingOrganization', query: {} });
         }
     });
 });

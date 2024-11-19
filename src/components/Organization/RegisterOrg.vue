@@ -50,8 +50,6 @@
                                 v-model="selectedAddress"
                                 label="Endereço"
                                 :items="addressItems"
-                                item-value="id"
-                                item-text="address"
                                 variant="outlined"
                                 required
                             ></v-combobox>
@@ -80,6 +78,14 @@
                             >submit</v-btn>
                         </v-col>
                     </v-row>
+
+                    <v-snackbar
+                        v-model="snackbar.visible"
+                        :color="snackbar.color"
+                        :timeout="snackbar.timeout"
+                    >
+                        {{ snackbar.message }}
+                    </v-snackbar>
                 </v-container>
             </v-form>
         </div>
@@ -89,7 +95,9 @@
 <script setup>
 import { http } from '@/services/config';
 import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const areaItems = ref([]);
 const addressItems = ref([]);
 const name = ref(null);
@@ -97,13 +105,16 @@ const phone = ref(null);
 const description = ref(null);
 const selectedAddress = ref(null);
 const selectedArea = ref(null);
+const snackbar = ref({ visible: false, message: '', color: '', timeout: 2000, });
 
 function areaChoice() {
     http.get('/api/choices')
         .then(response => {
             if(response.data && response.data.area_choices) {
-                areaItems.value = response.data.area_choices;
-                console.log(response.data);
+                areaItems.value = response.data.area_choices.map(area => ({
+                    id: area.id,
+                    title: area.title
+                }))
             }
         })
         .catch(error => {
@@ -115,7 +126,10 @@ function addressChoice() {
     http.get('/api/address/')
         .then(response => {
             if(response.data) {
-                addressItems.value = response.data.map(address => address.address);
+                addressItems.value = response.data.map(address => ({
+                    id: address.id,
+                    title: address.address
+                }));
             }
         })
         .catch(error => {
@@ -124,23 +138,34 @@ function addressChoice() {
 }
 
 function submitOrg() {
-    const addressData = {
-        id: selectedAddress.value.id
+    if(!selectedArea.value || !selectedArea.value.id) {
+        snackbar.value.visible = true;
+        snackbar.value.color = 'danger';
+        snackbar.value.message = 'Por favor, selecione uma área válida.';
+        return;
+    }
+    if(!selectedAddress.value || !selectedAddress.value.id) {
+        snackbar.value.visible = true;
+        snackbar.value.color = 'danger';
+        snackbar.value.message = 'Por favor, selecione um endereço válido.';
+        return;
     }
 
+    // Realiza o POST se tudo estiver preenchido
     http.post('/api/organizations/', {
         name: name.value,
         phone: phone.value,
-        area: selectedArea.value,
+        area: selectedArea.value.id,
         description: description.value,
-        address_base: addressData
+        address: selectedAddress.value.id
     })
         .then(() => {
-            console.log('Enviado com sucesso!')
+            router.push({ name: 'ListingOrganization', query: { snackbarMessage: 'Cadastro da organização realizado com sucesso!' }})
         })
         .catch(error => {
-            console.log('Erro ao enviar o cadastro: ', error.response?.data || error.message);
-            console.log(addressData);
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = `Erro ao realizar o cadastro: ${error.message}`
         })
 }
 

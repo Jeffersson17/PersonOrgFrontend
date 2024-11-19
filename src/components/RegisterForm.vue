@@ -31,16 +31,6 @@
             :timeout="snackbar.timeout"
           >
             {{ snackbar.message }}
-            <template v-slot:action="{ attrs }">
-              <v-btn
-                color="white"
-                text
-                v-bind="attrs"
-                @click="snackbar.visible = false"
-              >
-                Fechar
-              </v-btn>
-            </template>
           </v-snackbar>
         </v-container>
     </div>
