@@ -65,7 +65,7 @@ function submitForm() {
   })
   .then(() => {
     // Redireciona para a página principal
-    router.push({ name: 'Home', query: { snackbarMessage: 'Cadastro realizado com sucesso!' } });
+    router.push({ name: 'Home', query: { snackbarMessage: 'Cadastro realizado com sucesso!' }});
   })
   .catch(error => {
     if(error.response && error.response.data) {
