@@ -106,19 +106,12 @@ const router = useRouter();
 const areaItems = ref([]);
 const addressItems = ref([]);
 const snackbar = ref({ visible: false, message: '', color: '', timeout: 2000, });
-const props = defineProps({
-  id: {
+const props = defineProps({ id: {
     type: Number,
     required: true,
-  }
-});
+  }});
 
 function fetchOrganization() {
-    if (!props.id) {
-        console.error('ID não foi passado!');
-        return;
-    }
-
     http.get(`/organizations/detail-api/${props.id}/`)
         .then(response => {
             name.value = response.data.name;
@@ -130,8 +123,10 @@ function fetchOrganization() {
             };
             description.value = response.data.description;
         })
-        .catch(error => {
-            console.log(error.data)
+        .catch(() => {
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = 'Erro ao buscar as informaçoes desta organização!';
         })
 }
 
@@ -145,8 +140,10 @@ function areaChoice() {
                 }))
             }
         })
-        .catch(error => {
-            console.log('Erro ao buscar as areas: ', error.message);
+        .catch(() => {
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = 'Erro ao buscar as areas!';
         })
 }
 
@@ -160,8 +157,10 @@ function addressChoice() {
                 }));
             }
         })
-        .catch(error => {
-            console.log('Erro na requisição: ', error.message);
+        .catch(() => {
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = 'Erro ao buscar os endereços!';
         })
 }
 

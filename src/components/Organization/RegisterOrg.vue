@@ -117,8 +117,10 @@ function areaChoice() {
                 }))
             }
         })
-        .catch(error => {
-            console.log('Erro ao buscar as areas: ', error.message);
+        .catch(() => {
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = 'Erro ao buscar as areas!';
         })
 }
 
@@ -132,8 +134,10 @@ function addressChoice() {
                 }));
             }
         })
-        .catch(error => {
-            console.log('Erro na requisição: ', error.message);
+        .catch(() => {
+            snackbar.value.visible = true;
+            snackbar.value.color = 'danger';
+            snackbar.value.message = 'Erro ao buscar os endereços!';
         })
 }
 
