@@ -10,12 +10,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomePageView
+    component: HomePageView,
   },
   {
     path: '/create',
     name: 'Create',
-    component: FormView
+    component: FormView,
   },
   {
     path: '/update/:id',
@@ -31,12 +31,13 @@ const routes = [
   {
     path: '/organization/register/',
     name: 'RegisterOrganization',
-    component: RegisterOrg
+    component: RegisterOrg,
   },
   {
     path: '/organization/update/:id/',
     name: 'UpdateOrganization',
-    component: EditOrg
+    component: EditOrg,
+    props: true,
   }
 ];
 
